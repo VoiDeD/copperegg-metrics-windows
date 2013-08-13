@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Web;
 
 namespace CopperEggLib
 {
@@ -22,13 +23,15 @@ namespace CopperEggLib
         HttpClient httpClient;
 
 
-        public TimeSpan Timeout { get; set; }
+        public TimeSpan Timeout
+        {
+            get { return httpClient.Timeout; }
+            set { httpClient.Timeout = value; }
+        }
 
 
         public APIClient( string apiKey )
         {
-            Timeout = TimeSpan.FromSeconds( 10 );
-
             this.apiKey = apiKey;
             arguments = new Dictionary<string, string>();
 
@@ -39,7 +42,6 @@ namespace CopperEggLib
             };
 
             httpClient = new HttpClient( handler );
-            httpClient.Timeout = TimeSpan.FromSeconds( 10 );
         }
 
 
@@ -47,9 +49,12 @@ namespace CopperEggLib
         {
             arguments[ name ] = value;
         }
+        public void AddArgument( string name, IEnumerable<string> values )
+        {
+            arguments[ name ] = string.Join( ",", values );
+        }
 
         public async Task<T> Request<T>( string command, HttpMethod method = null )
-            where T : new()
         {
             var respMsg = await RequestInternal( command, method );
 
@@ -72,9 +77,17 @@ namespace CopperEggLib
             string url = string.Format( "{0}{1}", API_BASE, command );
 
             var reqMsg = new HttpRequestMessage();
-
             reqMsg.Method = method;
-            reqMsg.RequestUri = new Uri( url );
+
+            var queryArguments = HttpUtility.ParseQueryString( string.Empty );
+
+            foreach ( var arg in arguments )
+                queryArguments[ arg.Key ] = arg.Value;
+
+            var uriBuilder = new UriBuilder( url );
+            uriBuilder.Query = queryArguments.ToString();
+
+            reqMsg.RequestUri = uriBuilder.Uri;
 
             var respMsg = await httpClient.SendAsync( reqMsg );
             respMsg.EnsureSuccessStatusCode();

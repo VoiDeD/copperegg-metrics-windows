@@ -67,5 +67,11 @@ namespace CopperEggLib
         {
             return Client.DeleteProbe( this.ID );
         }
+
+        public async Task<ProbeSample> GetSample()
+        {
+            var probeList = await Client.GetProbeSamples( EnumerableEx.FromSingle( this ) );
+            return probeList.First();
+        }
     }
 }

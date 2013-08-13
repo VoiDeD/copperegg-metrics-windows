@@ -39,11 +39,31 @@ namespace CopperEggLib
             }
         }
 
-        public Task DeleteProbe( string probeId )
+        public Task<List<ProbeSample>> GetProbeSamples( IEnumerable<Probe> probes )
+        {
+            if ( !probes.All( p => p.Client == this ) )
+                throw new InvalidOperationException( "Cannot request probe sample of a probe not owned by this CopperEgg instance" );
+
+            return GetProbeSamples( probes.Select( p => p.ID ) );
+        }
+        public async Task<List<ProbeSample>> GetProbeSamples( IEnumerable<string> probeIds )
         {
             using ( var apiClient = new APIClient( APIKey ) )
             {
-                return apiClient.Request( string.Format( "revealuptime/probes/{0}.json", probeId ), HttpMethod.Delete );
+                var probeList = string.Join( ",", probeIds );
+                apiClient.AddArgument( "ids", probeList );
+
+                var req = string.Format( "revealuptime/samples.json" );
+
+                return await apiClient.Request<List<ProbeSample>>( req );
+            }
+        }
+
+        public async Task DeleteProbe( string probeId )
+        {
+            using ( var apiClient = new APIClient( APIKey ) )
+            {
+                await apiClient.Request( string.Format( "revealuptime/probes/{0}.json", probeId ), HttpMethod.Delete );
             }
         }
     }
