@@ -23,7 +23,6 @@ namespace CopperEggLib
                 return probes;
             }
         }
-
         public async Task<Probe> GetProbe( string probeId )
         {
             using ( var apiClient = new APIClient( APIKey ) )
