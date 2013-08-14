@@ -11,7 +11,7 @@ namespace CopperEggLib
     {
         public async Task<List<MetricGroup>> GetMetricGroups()
         {
-            using ( var apiClient = new APIClient( APIKey ) )
+            using ( var apiClient = GetAPIClient() )
             {
                 var metricGroups = await apiClient.Request<List<MetricGroup>>( "revealmetrics/metric_groups.json" );
 
@@ -22,7 +22,7 @@ namespace CopperEggLib
         }
         public async Task<MetricGroup> GetMetricGroup( string groupId )
         {
-            using ( var apiClient = new APIClient( APIKey ) )
+            using ( var apiClient = GetAPIClient() )
             {
                 var metricGroup = await apiClient.Request<MetricGroup>( string.Format( "revealmetrics/metric_groups/{0}.json", groupId ) );
 
@@ -34,7 +34,7 @@ namespace CopperEggLib
 
         public async Task DeleteMetricGroup( string groupId )
         {
-            using ( var apiClient = new APIClient( APIKey ) )
+            using ( var apiClient = GetAPIClient() )
             {
                 await apiClient.Request( string.Format( "revealmetrics/metric_groups/{0}.json", groupId ), HttpMethod.Delete );
             }

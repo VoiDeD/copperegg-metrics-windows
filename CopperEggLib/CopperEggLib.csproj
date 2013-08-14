@@ -46,10 +46,9 @@
   <ItemGroup>
     <Compile Include="CopperEgg\CopperEgg.Probes.cs" />
     <Compile Include="CopperEgg\CopperEgg.Metrics.cs" />
-    <Compile Include="CopperEgg\RevealMetrics\Metric.cs" />
     <Compile Include="CopperEgg\RevealMetrics\MetricGroup.cs" />
     <Compile Include="CopperEgg\RevealUptime\ProbeSample.cs" />
-    <Compile Include="Utils\APIClient.cs" />
+    <Compile Include="CopperEgg\APIClient.cs" />
     <Compile Include="CopperEgg\CopperEgg.cs" />
     <Compile Include="CopperEgg\RevealUptime\Probe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

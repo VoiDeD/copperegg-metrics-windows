@@ -11,9 +11,15 @@ namespace CopperEggLib
         public string APIKey { get; set; }
 
 
-        public CopperEgg( string apiKey )
+        public CopperEgg( string apiKey = null )
         {
-            this.APIKey = apiKey;
+            APIKey = apiKey;
+        }
+
+
+        APIClient GetAPIClient()
+        {
+            return new APIClient( APIKey );
         }
     }
 }

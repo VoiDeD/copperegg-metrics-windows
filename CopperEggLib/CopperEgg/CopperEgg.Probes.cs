@@ -11,7 +11,7 @@ namespace CopperEggLib
     {
         public async Task<List<Probe>> GetProbes()
         {
-            using ( var apiClient = new APIClient( APIKey ) )
+            using ( var apiClient = GetAPIClient() )
             {
                 var probes = await apiClient.Request<List<Probe>>( "revealuptime/probes.json" );
 
@@ -25,7 +25,7 @@ namespace CopperEggLib
         }
         public async Task<Probe> GetProbe( string probeId )
         {
-            using ( var apiClient = new APIClient( APIKey ) )
+            using ( var apiClient = GetAPIClient() )
             {
                 var probe = await apiClient.Request<Probe>( string.Format( "revealuptime/probes/{0}.json", probeId ) );
 
@@ -47,7 +47,7 @@ namespace CopperEggLib
         }
         public async Task<List<ProbeSample>> GetProbeSamples( IEnumerable<string> probeIds )
         {
-            using ( var apiClient = new APIClient( APIKey ) )
+            using ( var apiClient = GetAPIClient() )
             {
                 var probeList = string.Join( ",", probeIds );
                 apiClient.AddArgument( "ids", probeList );
@@ -60,7 +60,7 @@ namespace CopperEggLib
 
         public async Task DeleteProbe( string probeId )
         {
-            using ( var apiClient = new APIClient( APIKey ) )
+            using ( var apiClient = GetAPIClient() )
             {
                 await apiClient.Request( string.Format( "revealuptime/probes/{0}.json", probeId ), HttpMethod.Delete );
             }
