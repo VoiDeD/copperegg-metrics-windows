@@ -78,7 +78,7 @@ namespace CopperEggLib
         [JsonProperty( "position" )]
         public int Position { get; set; }
 
-        [JsonProperty( "units" )]
-        public string Units { get; set; }
+        [JsonProperty( "unit" )]
+        public string Unit { get; set; }
     }
 }
