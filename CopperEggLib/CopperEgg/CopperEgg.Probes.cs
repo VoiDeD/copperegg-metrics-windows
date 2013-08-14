@@ -27,7 +27,6 @@ namespace CopperEggLib
                 return probes;
             }
         }
-
         /// <summary>
         /// Sends a request to the CopperEgg backend to retrieve information for a single <see cref="Probe"/>.
         /// </summary>
@@ -47,6 +46,7 @@ namespace CopperEggLib
                 return probe;
             }
         }
+
 
         /// <summary>
         /// Requests a list of <see cref="ProbeSample"/>s for the given <see cref="Probe"/>s.
@@ -79,8 +79,22 @@ namespace CopperEggLib
             }
         }
 
+
+        /// <summary>.
+        /// Sends a request to delete the given <see cref="Probe"/>
+        /// </summary>
+        /// <param name="probe">The probe to delete.</param>
+        /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
+        /// <exception cref="System.InvalidOperationException">A probe was provided in that does not belong to this CopperEgg instance.</exception>
+        public Task DeleteProbe( Probe probe )
+        {
+            if ( probe.Client != this )
+                throw new InvalidOperationException( "Cannot delete a probe not owned by this CopperEgg instance" );
+
+            return DeleteProbe( probe.ID );
+        }
         /// <summary>
-        /// Sends a request to delete the <see cref="Probe"/> specified by rhe given probe ID.
+        /// Sends a request to delete the <see cref="Probe"/> specified by the given probe ID.
         /// </summary>
         /// <param name="probeId">The ID of the probe to delete.</param>
         /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>

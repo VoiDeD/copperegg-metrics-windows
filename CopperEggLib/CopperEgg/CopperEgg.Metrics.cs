@@ -55,6 +55,21 @@ namespace CopperEggLib
             }
         }
 
+
+        /// <summary>
+        /// Stores a single <see cref="MetricGroupSample"/> for the given <see cref="MetricGroup"/>.
+        /// </summary>
+        /// <param name="metricGroup">The metric group to store the sample for.</param>
+        /// <param name="sample">The sample to store.</param>
+        /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
+        /// <exception cref="System.InvalidOperationException">A metric group was provided in that does not belong to this CopperEgg instance.</exception>
+        public Task StoreMetricGroupSample( MetricGroup metricGroup, MetricGroupSample sample )
+        {
+            if ( metricGroup.Client != this )
+                throw new InvalidOperationException( "Cannot store metric group sample of a metric group not owned by this CopperEgg instance" );
+
+            return StoreMetricGroupSample( metricGroup.ID, sample );
+        }
         /// <summary>
         /// Stores a single <see cref="MetricGroupSample"/> for the given metric group ID.
         /// </summary>
@@ -69,6 +84,20 @@ namespace CopperEggLib
             }
         }
 
+
+        /// <summary>
+        /// Sends a request to delete the given <see cref="MetricGroup"/>.s
+        /// </summary>
+        /// <param name="metricGroup">The metric group to delete.</param>
+        /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
+        /// <exception cref="System.InvalidOperationException">A metric group was provided in that does not belong to this CopperEgg instance.</exception>
+        public Task DeleteMetricGroup( MetricGroup metricGroup )
+        {
+            if ( metricGroup.Client != this )
+                throw new InvalidOperationException( "Cannot delete a metric group not owned by this CopperEgg instance" );
+
+            return DeleteMetricGroup( metricGroup.ID );
+        }
         /// <summary>
         /// Sends a request to delete the <see cref="MetricGroup"/> specified by the given metric group ID.
         /// </summary>

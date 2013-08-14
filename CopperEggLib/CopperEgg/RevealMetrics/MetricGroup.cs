@@ -66,7 +66,7 @@ namespace CopperEggLib
             if ( string.IsNullOrEmpty( ID ) )
                 throw new InvalidOperationException( "Cannot delete a metric group that has not been assigned an ID" );
 
-            return Client.DeleteMetricGroup( this.ID );
+            return Client.DeleteMetricGroup( this );
         }
 
         /// <summary>

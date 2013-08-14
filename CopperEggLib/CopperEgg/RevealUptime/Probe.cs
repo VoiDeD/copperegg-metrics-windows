@@ -140,7 +140,7 @@ namespace CopperEggLib
         /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
         public Task Delete()
         {
-            return Client.DeleteProbe( this.ID );
+            return Client.DeleteProbe( this );
         }
 
         /// <summary>
