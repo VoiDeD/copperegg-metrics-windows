@@ -9,6 +9,14 @@ namespace CopperEggLib
 {
     public partial class CopperEgg
     {
+        public async Task<MetricGroup> CreateMetricGroup( MetricGroup groupInfo )
+        {
+            using ( var apiClient = GetAPIClient() )
+            {
+                return await apiClient.Request<MetricGroup>( "revealmetrics/metric_groups.json", HttpMethod.Post, groupInfo );
+            }
+        }
+
         public async Task<List<MetricGroup>> GetMetricGroups()
         {
             using ( var apiClient = GetAPIClient() )
@@ -29,6 +37,14 @@ namespace CopperEggLib
                 metricGroup.Client = this;
 
                 return metricGroup;
+            }
+        }
+
+        public async Task StoreMetricGroupSample( string groupId, MetricGroupSample sample )
+        {
+            using ( var apiClient = GetAPIClient() )
+            {
+                await apiClient.Request( string.Format( "revealmetrics/samples/{0}.json", groupId ), HttpMethod.Post, sample );
             }
         }
 

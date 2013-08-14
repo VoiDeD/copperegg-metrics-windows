@@ -37,14 +37,18 @@ namespace CopperEggLib
         public string Destination { get; set; }
 
         [JsonConverter( typeof( TimeSpanSecondsConverter ) )]
+        [JsonProperty( "frequency" )]
         public TimeSpan Frequency { get; set; }
 
         [JsonConverter( typeof( TimeSpanMillisecondsConverter ) )]
+        [JsonProperty( "timeout" )]
         public TimeSpan Timeout { get; set; }
 
+        [JsonProperty( "retries" )]
         public int Retries { get; set; }
 
         [JsonConverter( typeof( StringEnumConverter ) )]
+        [JsonProperty( "type" )]
         public ProbeType Type { get; set; }
 
         [JsonProperty( "created_at" )]
@@ -56,10 +60,13 @@ namespace CopperEggLib
         public DateTime UpdatedTime { get; set; }
 
         [JsonConverter( typeof( StringEnumConverter ) )]
+        [JsonProperty( "state" )]
         public ProbeState State { get; set; }
 
+        [JsonProperty( "tags" )]
         public List<string> Tags { get; set; }
 
+        [JsonProperty( "stations" )]
         public List<string> Stations { get; set; }
 
 

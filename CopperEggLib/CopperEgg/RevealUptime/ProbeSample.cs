@@ -17,9 +17,11 @@ namespace CopperEggLib
         public string ProbeID { get; set; }
 
         [JsonIgnore]
+        [JsonProperty( "name" )]
         public string Name { get; set; }
 
         [JsonIgnore]
+        [JsonProperty( "action" )]
         public string Action { get; set; }
 
         [JsonProperty( "_bs" )]
