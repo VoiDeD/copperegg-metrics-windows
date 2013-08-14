@@ -9,6 +9,11 @@ namespace CopperEggLib
 {
     public partial class CopperEgg
     {
+        /// <summary>
+        /// Sends a request to the CopperEgg backend to creates a metric group from the given <see cref="MetricGroup"/> information.
+        /// </summary>
+        /// <param name="groupInfo">The metric group information.</param>
+        /// <returns>A <see cref="Task{T}"/> that can be used to monitor the completion of this request.</returns>
         public async Task<MetricGroup> CreateMetricGroup( MetricGroup groupInfo )
         {
             using ( var apiClient = GetAPIClient() )
@@ -17,6 +22,11 @@ namespace CopperEggLib
             }
         }
 
+
+        /// <summary>
+        /// Requests a list of all <see cref="MetricGroup"/>s from the CopperEgg backend.
+        /// </summary>
+        /// <returns>A <see cref="Task{T}"/> that can be used to monitor the completion of this request.</returns>
         public async Task<List<MetricGroup>> GetMetricGroups()
         {
             using ( var apiClient = GetAPIClient() )
@@ -28,6 +38,11 @@ namespace CopperEggLib
                 return metricGroups;
             }
         }
+        /// <summary>
+        /// Sends a request to the CopperEgg backend to retrieve information for a single <see cref="MetricGroup"/>.
+        /// </summary>
+        /// <param name="groupId">The metric group ID to request information for.</param>
+        /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
         public async Task<MetricGroup> GetMetricGroup( string groupId )
         {
             using ( var apiClient = GetAPIClient() )
@@ -40,6 +55,12 @@ namespace CopperEggLib
             }
         }
 
+        /// <summary>
+        /// Stores a single <see cref="MetricGroupSample"/> for the given metric group ID.
+        /// </summary>
+        /// <param name="groupId">The metric group ID to store the sample for.</param>
+        /// <param name="sample">The <see cref="MetricGroupSample"/> to store.</param>
+        /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
         public async Task StoreMetricGroupSample( string groupId, MetricGroupSample sample )
         {
             using ( var apiClient = GetAPIClient() )
@@ -48,6 +69,11 @@ namespace CopperEggLib
             }
         }
 
+        /// <summary>
+        /// Sends a request to delete the <see cref="MetricGroup"/> specified by the given metric group ID.
+        /// </summary>
+        /// <param name="groupId">The ID of the metric group to delete.</param>
+        /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
         public async Task DeleteMetricGroup( string groupId )
         {
             using ( var apiClient = GetAPIClient() )
