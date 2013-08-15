@@ -32,8 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\packages\MySql.Data.6.7.4\lib\net40\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,23 +46,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Service.cs">
+    <Compile Include="Metrics\MetricManager.cs" />
+    <Compile Include="Metrics\Providers\IMetricProvider.cs" />
+    <Compile Include="Metrics\Providers\MySQLMetrics.cs" />
+    <Compile Include="Service\Service.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Service.Designer.cs">
+    <Compile Include="Service\Service.Designer.cs">
       <DependentUpon>Service.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Log.cs" />
+    <Compile Include="Utils\PausableTimer.cs" />
+    <Compile Include="Utils\Settings.cs" />
+    <Compile Include="Utils\XmlSerializable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CopperEggLib\CopperEggLib.csproj">
       <Project>{5f332238-b5f8-4792-8cf5-445dc386edd6}</Project>
       <Name>CopperEggLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="settings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
