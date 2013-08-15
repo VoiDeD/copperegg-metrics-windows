@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -36,8 +37,6 @@ namespace CoppereggMetrics
 
         public async void Start()
         {
-            List<MetricGroup> existingGroups = await copperEgg.GetMetricGroups();
-
             IEnumerable<Task> setupTasks = metricProviders.Select( p => SetupMetricGroup( p ) );
 
             await Task.WhenAll( setupTasks );
@@ -58,7 +57,16 @@ namespace CoppereggMetrics
 
             var setupGroup = provider.SetupMetricGroup();
 
-            List<MetricGroup> existingGroups = await copperEgg.GetMetricGroups();
+            var existingGroups = new List<MetricGroup>();
+            try
+            {
+                existingGroups = await copperEgg.GetMetricGroups();
+            }
+            catch ( HttpRequestException ex )
+            {
+                Log.WriteError( "MetricManager", "Unable to request existing metric groups: {0}", ex.Message );
+                return;
+            }
 
             var existingGroup = existingGroups.Find( grp => grp.Name.StartsWith( setupGroup.Name ) );
 
@@ -73,9 +81,14 @@ namespace CoppereggMetrics
 
             Log.WriteInfo( "MetricManager", "Creating metric group..." );
 
-            var createdGroup = await copperEgg.CreateMetricGroup( setupGroup );
-
-            providerMap[ provider ] = createdGroup;
+            try
+            {
+                providerMap[ provider ] = await copperEgg.CreateMetricGroup( setupGroup );
+            }
+            catch ( HttpRequestException ex )
+            {
+                Log.WriteError( "MetricManager", "Unable to create metric group for {0}: {1}", provider, ex.Message );
+            }
         }
 
         async void OnSample( object state )
@@ -92,7 +105,16 @@ namespace CoppereggMetrics
 
         async Task SampleMetric( IMetricProvider provider )
         {
-            MetricGroupSample sample = await provider.PerformSample();
+            MetricGroupSample sample;
+            try
+            {
+                sample = await provider.PerformSample();
+            }
+            catch ( Exception ex )
+            {
+                Log.WriteWarn( "MetricManager", "Unable to sample {0}: {1}", provider, ex.Message );
+                return;
+            }
 
             MetricGroup metricGroup;
             if ( !providerMap.TryGetValue( provider, out metricGroup ) )
@@ -101,7 +123,14 @@ namespace CoppereggMetrics
                 return;
             }
 
-            await metricGroup.StoreSample( sample );
+            try
+            {
+                await metricGroup.StoreSample( sample );
+            }
+            catch ( HttpRequestException ex )
+            {
+                Log.WriteWarn( "MetricManager", "Unable to store sample for {0]: {1}", provider, ex.Message );
+            }
         }
     }
 }
