@@ -18,7 +18,11 @@ namespace CopperEggLib
         {
             using ( var apiClient = GetAPIClient() )
             {
-                return await apiClient.Request<MetricGroup>( "revealmetrics/metric_groups.json", HttpMethod.Post, groupInfo );
+                var metricGroup = await apiClient.Request<MetricGroup>( "revealmetrics/metric_groups.json", HttpMethod.Post, groupInfo );
+
+                metricGroup.Client = this;
+
+                return metricGroup;
             }
         }
 

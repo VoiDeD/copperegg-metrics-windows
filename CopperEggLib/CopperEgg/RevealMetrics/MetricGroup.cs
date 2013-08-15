@@ -66,6 +66,9 @@ namespace CopperEggLib
             if ( string.IsNullOrEmpty( ID ) )
                 throw new InvalidOperationException( "Cannot delete a metric group that has not been assigned an ID" );
 
+            if ( Client == null )
+                throw new InvalidOperationException( "This action can only be performed on a metric group associated with a CopperEgg instance" );
+
             return Client.DeleteMetricGroup( this );
         }
 
@@ -76,6 +79,9 @@ namespace CopperEggLib
         /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
         public Task StoreSample( MetricGroupSample sample )
         {
+            if ( Client == null )
+                throw new InvalidOperationException( "This action can only be performed on a metric group associated with a CopperEgg instance" );
+
             return Client.StoreMetricGroupSample( this, sample );
         }
 

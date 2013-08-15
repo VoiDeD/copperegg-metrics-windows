@@ -140,6 +140,9 @@ namespace CopperEggLib
         /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
         public Task Delete()
         {
+            if ( Client == null )
+                throw new InvalidOperationException( "This action can only be performed on a probe associated with a CopperEgg instance" );
+
             return Client.DeleteProbe( this );
         }
 
@@ -149,6 +152,9 @@ namespace CopperEggLib
         /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
         public async Task<ProbeSample> GetSample()
         {
+            if ( Client == null )
+                throw new InvalidOperationException( "This action can only be performed on a probe associated with a CopperEgg instance" );
+
             var probeList = await Client.GetProbeSamples( EnumerableEx.FromSingle( this ) );
             return probeList.First();
         }
