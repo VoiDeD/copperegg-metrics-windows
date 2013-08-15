@@ -80,13 +80,13 @@ namespace CoppereggMetrics
 
         async void OnSample( object state )
         {
-            Log.WriteDebug( "MetricManager", "Sampling!" );
+            sampleTimer.Pause();
 
             IEnumerable<Task> sampleTasks = providerMap.Keys.Select( provider => SampleMetric( provider ) );
 
             await Task.WhenAll( sampleTasks );
 
-            Log.WriteDebug( "MetricManager", "Done!" );
+            sampleTimer.Resume();
         }
 
 

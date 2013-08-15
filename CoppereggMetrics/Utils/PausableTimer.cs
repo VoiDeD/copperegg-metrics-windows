@@ -46,11 +46,7 @@ namespace CoppereggMetrics
 
         void OnTick( object state )
         {
-            Pause();
-
             func( state );
-
-            Resume();
         }
     }
 }
