@@ -58,17 +58,17 @@ namespace CoppereggMetrics
                     var sample = new MetricGroupSample();
 
                     sample.Values[ "threads" ] = Convert.ToInt32( rows[ "Threads_connected" ] );
-                    sample.Values[ "queries" ] = Convert.ToInt32( rows[ "Queries" ] );
-                    sample.Values[ "slow_queries" ] = Convert.ToInt32( rows[ "Slow_queries" ] );
-                    sample.Values[ "insert_commands" ] = Convert.ToInt32( rows[ "Com_insert" ] );
-                    sample.Values[ "select_commands" ] = Convert.ToInt32( rows[ "Com_select" ] );
-                    sample.Values[ "update_commands" ] = Convert.ToInt32( rows[ "Com_update" ] );
+                    sample.Values[ "queries" ] = Convert.ToInt64( rows[ "Queries" ] );
+                    sample.Values[ "slow_queries" ] = Convert.ToInt64( rows[ "Slow_queries" ] );
+                    sample.Values[ "insert_commands" ] = Convert.ToInt64( rows[ "Com_insert" ] );
+                    sample.Values[ "select_commands" ] = Convert.ToInt64( rows[ "Com_select" ] );
+                    sample.Values[ "update_commands" ] = Convert.ToInt64( rows[ "Com_update" ] );
                     sample.Values[ "uptime" ] = Convert.ToInt32( rows[ "Uptime" ] );
                     sample.Values[ "max_used_connections" ] = Convert.ToInt32( rows[ "Max_used_connections" ] );
                     sample.Values[ "select_full_join" ] = Convert.ToInt32( rows[ "Select_full_join" ] );
-                    sample.Values[ "bytes_received" ] = Convert.ToInt32( rows[ "Bytes_received" ] );
-                    sample.Values[ "bytes_sent" ] = Convert.ToInt32( rows[ "Bytes_sent" ] );
-                    sample.Values[ "connections" ] = Convert.ToInt32( rows[ "Connections" ] );
+                    sample.Values[ "bytes_received" ] = Convert.ToInt64( rows[ "Bytes_received" ] );
+                    sample.Values[ "bytes_sent" ] = Convert.ToInt64( rows[ "Bytes_sent" ] );
+                    sample.Values[ "connections" ] = Convert.ToInt64( rows[ "Connections" ] );
                     sample.Values[ "threads_running" ] = Convert.ToInt32( rows[ "Threads_running" ] );
 
                     return sample;
