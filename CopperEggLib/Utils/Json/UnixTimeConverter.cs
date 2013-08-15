@@ -38,7 +38,7 @@ namespace CopperEggLib
                     throw new JsonSerializationException( "Invalid unix timestamp" );
                 }
 
-                writer.WriteValue( diff.TotalSeconds );
+                writer.WriteValue( ( long )diff.TotalSeconds );
             }
             else
             {

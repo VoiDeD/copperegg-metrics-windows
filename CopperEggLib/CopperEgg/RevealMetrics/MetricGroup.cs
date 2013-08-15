@@ -70,12 +70,28 @@ namespace CopperEggLib
         }
 
         /// <summary>
+        /// Stores a single <see cref="MetricGroupSample"/> for this metric group.
+        /// </summary>
+        /// <param name="sample">The sample to store.</param>
+        /// <returns>A <see cref="Task"/> that can be used to monitor the completion of this request.</returns>
+        public Task StoreSample( MetricGroupSample sample )
+        {
+            return Client.StoreMetricGroupSample( this, sample );
+        }
+
+        /// <summary>
         /// Creates a new <see cref="Metric"/> and adds it to the <see cref="Metrics"/> list before returning it.
         /// </summary>
         /// <returns>A newly created <see cref="Metric"/> for this <see cref="MetricGroup"/>.</returns>
-        public Metric CreateMetric()
+        public Metric AddMetric( string name = default( string ), string label = default( string ), MetricType type = default( MetricType ), string units = default( string )  )
         {
-            var metric = new Metric();
+            var metric = new Metric
+            {
+                Name = name,
+                Label = label,
+                Type = type,
+                Units = units,
+            };
 
             Metrics.Add( metric );
 
@@ -143,6 +159,6 @@ namespace CopperEggLib
         /// Gets or sets the quantitative unit of this metric.
         /// </summary>
         [JsonProperty( "unit" )]
-        public string Unit { get; set; }
+        public string Units { get; set; }
     }
 }

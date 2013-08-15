@@ -22,13 +22,14 @@ namespace CopperEggLib
         /// Gets or sets the time this sample was collected.
         /// </summary>
         [JsonProperty( "timestamp" )]
+        [JsonConverter( typeof( UnixTimeConverter ) )]
         public DateTime Timestamp { get; set; }
 
         /// <summary>
         /// Gets or sets the values of this sample.
         /// </summary>
         [JsonProperty( "values" )]
-        public Dictionary<string, float> Values { get; set; }
+        public Dictionary<string, object> Values { get; set; }
 
 
         /// <summary>
@@ -36,7 +37,8 @@ namespace CopperEggLib
         /// </summary>
         public MetricGroupSample()
         {
-            Values = new Dictionary<string, float>();
+            Values = new Dictionary<string, object>();
+            Timestamp = DateTime.UtcNow;
         }
     }
 }
