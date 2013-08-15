@@ -26,7 +26,7 @@ namespace CoppereggMetrics
             mg.AddMetric( "select_commands", "Select Commands", MetricType.Counter, "Commands" );
             mg.AddMetric( "update_commands", "Update Commands", MetricType.Counter, "Commands" );
             mg.AddMetric( "uptime", "Uptime", MetricType.Counter, "Seconds" );
-            mg.AddMetric( "max_used_connections", "Max Used Connections", MetricType.Gauge, "Connections" );
+            mg.AddMetric( "max_used_connections", "Peak Used Connections", MetricType.Gauge, "Connections" );
             mg.AddMetric( "select_full_join", "Full Scan Joins", MetricType.Counter, "Queries" );
             mg.AddMetric( "bytes_received", "Data Received", MetricType.Counter, "Bytes" );
             mg.AddMetric( "bytes_sent", "Data Sent", MetricType.Counter, "Bytes" );
