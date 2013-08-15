@@ -38,7 +38,9 @@ namespace CopperEggLib
         public MetricGroupSample()
         {
             Values = new Dictionary<string, object>();
+
             Timestamp = DateTime.UtcNow;
+            Identifier = Environment.MachineName;
         }
     }
 }
