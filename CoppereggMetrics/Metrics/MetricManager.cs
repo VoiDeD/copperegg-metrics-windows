@@ -30,7 +30,7 @@ namespace CoppereggMetrics
             providerMap = new ConcurrentDictionary<IMetricProvider, MetricGroup>();
 
             // todo: reflection/plugin system?
-            metricProviders.Add( new MySQLMetrics() );
+            metricProviders.Add( new MySqlMetricProvider() );
         }
 
 

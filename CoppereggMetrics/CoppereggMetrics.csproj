@@ -49,8 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Metrics\MetricManager.cs" />
-    <Compile Include="Metrics\Providers\IMetricProvider.cs" />
-    <Compile Include="Metrics\Providers\MySQLMetrics.cs" />
+    <Compile Include="Metrics\IMetricProvider.cs" />
+    <Compile Include="Metrics\Providers\MySqlMetricProvider.cs" />
     <Compile Include="Service\ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

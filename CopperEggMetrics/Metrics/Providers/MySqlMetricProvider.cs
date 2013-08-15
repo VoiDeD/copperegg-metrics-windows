@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace CoppereggMetrics
 {
-    class MySQLMetrics : IMetricProvider
+    class MySqlMetricProvider : IMetricProvider
     {
         public MetricGroup SetupMetricGroup()
         {
