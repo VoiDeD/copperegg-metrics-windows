@@ -55,7 +55,7 @@ namespace CoppereggMetrics
         {
             Log.WriteInfo( "MetricManager", "Initializing metric group for {0}", provider );
 
-            var setupGroup = provider.SetupMetricGroup();
+            var setupGroup = provider.GetMetricGroup();
 
             var existingGroups = new List<MetricGroup>();
             try
@@ -72,7 +72,7 @@ namespace CoppereggMetrics
 
             if ( existingGroup != null )
             {
-                Log.WriteInfo( "MetricManager", "Metric group already exists!" );
+                Log.WriteInfo( "MetricManager", "Metric group for {0} already exists!", provider );
 
                 // if the group we're trying to create already exists, we're done!
                 providerMap[ provider ] = existingGroup;
@@ -105,6 +105,8 @@ namespace CoppereggMetrics
 
         async Task SampleMetric( IMetricProvider provider )
         {
+            Log.WriteDebug( "MetricManager", "Sampling {0}", provider );
+
             MetricGroupSample sample;
             try
             {
@@ -116,6 +118,8 @@ namespace CoppereggMetrics
                 return;
             }
 
+            Log.WriteDebug( "MetricManager", "Done sampling {0}", provider );
+
             MetricGroup metricGroup;
             if ( !providerMap.TryGetValue( provider, out metricGroup ) )
             {
@@ -123,14 +127,18 @@ namespace CoppereggMetrics
                 return;
             }
 
+            Log.WriteDebug( "MetricManager", "Storing sample for {0}", provider );
+
             try
             {
                 await metricGroup.StoreSample( sample );
             }
             catch ( HttpRequestException ex )
             {
-                Log.WriteWarn( "MetricManager", "Unable to store sample for {0]: {1}", provider, ex.Message );
+                Log.WriteWarn( "MetricManager", "Unable to store sample for {0}: {1}", provider, ex.Message );
             }
+
+            Log.WriteDebug( "MetricManager", "Done storing sample for {0}", provider );
         }
     }
 }

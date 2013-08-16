@@ -9,7 +9,7 @@ namespace CoppereggMetrics
 {
     interface IMetricProvider
     {
-        MetricGroup SetupMetricGroup();
+        MetricGroup GetMetricGroup();
 
         Task<MetricGroupSample> PerformSample();
     }

@@ -9,34 +9,30 @@ using MySql.Data.MySqlClient;
 
 namespace CoppereggMetrics
 {
-    class MySqlMetricProvider : IMetricProvider
+    class MySqlMetricProvider : BaseMetricProvider<Dictionary<string, object>>
     {
-        public MetricGroup SetupMetricGroup()
+        public override string MetricName { get { return "mysql_metrics"; } }
+        public override string MetricLabel { get { return "MySQL Metrics"; }  }
+
+
+        protected override void SetupMetricGroup( MetricGroup metricGroup )
         {
-            var mg = new MetricGroup
-            {
-                Name = "mysql_metrics",
-                Label = "MySQL Metrics",
-            };
-
-            mg.AddMetric( "threads", "Threads Connected", MetricType.Gauge, "Threads" );
-            mg.AddMetric( "queries", "Queries", MetricType.Counter, "Queries" );
-            mg.AddMetric( "slow_queries", "Slow Queries", MetricType.Counter, "Queries" );
-            mg.AddMetric( "insert_commands", "Insert Commands", MetricType.Counter, "Commands" );
-            mg.AddMetric( "select_commands", "Select Commands", MetricType.Counter, "Commands" );
-            mg.AddMetric( "update_commands", "Update Commands", MetricType.Counter, "Commands" );
-            mg.AddMetric( "uptime", "Uptime", MetricType.Counter, "Seconds" );
-            mg.AddMetric( "max_used_connections", "Peak Used Connections", MetricType.Gauge, "Connections" );
-            mg.AddMetric( "select_full_join", "Full Scan Joins", MetricType.Counter, "Queries" );
-            mg.AddMetric( "bytes_received", "Data Received", MetricType.Counter, "Bytes" );
-            mg.AddMetric( "bytes_sent", "Data Sent", MetricType.Counter, "Bytes" );
-            mg.AddMetric( "connections", "Connections", MetricType.Counter, "Connections" );
-            mg.AddMetric( "threads_running", "Threads Running", MetricType.Gauge, "Threads" );
-
-            return mg;
+            metricGroup.AddMetric( "threads_connected", "Threads Connected", MetricType.Gauge, "Threads" );
+            metricGroup.AddMetric( "queries", "Queries", MetricType.Counter, "Queries" );
+            metricGroup.AddMetric( "slow_queries", "Slow Queries", MetricType.Counter, "Queries" );
+            metricGroup.AddMetric( "com_insert", "Insert Commands", MetricType.Counter, "Commands" );
+            metricGroup.AddMetric( "com_select", "Select Commands", MetricType.Counter, "Commands" );
+            metricGroup.AddMetric( "com_update", "Update Commands", MetricType.Counter, "Commands" );
+            metricGroup.AddMetric( "uptime", "Uptime", MetricType.Counter, "Seconds" );
+            metricGroup.AddMetric( "max_used_connections", "Peak Used Connections", MetricType.Gauge, "Connections" );
+            metricGroup.AddMetric( "select_full_join", "Full Scan Joins", MetricType.Counter, "Queries" );
+            metricGroup.AddMetric( "bytes_received", "Data Received", MetricType.Counter, "Bytes" );
+            metricGroup.AddMetric( "bytes_sent", "Data Sent", MetricType.Counter, "Bytes" );
+            metricGroup.AddMetric( "connections", "Connections", MetricType.Counter, "Connections" );
+            metricGroup.AddMetric( "threads_running", "Threads Running", MetricType.Gauge, "Threads" );
         }
 
-        public async Task<MetricGroupSample> PerformSample()
+        protected async override Task<Dictionary<string, object>> GetMetricSourceData()
         {
             using ( var conn = new MySqlConnection( Settings.Current.MySQLConnectionString ) )
             {
@@ -48,32 +44,29 @@ namespace CoppereggMetrics
 
                     DbDataReader reader = await cmd.ExecuteReaderAsync();
 
-                    var rows = new Dictionary<string, object>();
+                    var rows = new Dictionary<string, object>( StringComparer.OrdinalIgnoreCase );
 
                     while ( await reader.ReadAsync() )
                     {
                         rows[ reader.GetString( 0 ) ] = reader.GetValue( 1 );
                     }
 
-                    var sample = new MetricGroupSample();
-
-                    sample.Values[ "threads" ] = Convert.ToInt32( rows[ "Threads_connected" ] );
-                    sample.Values[ "queries" ] = Convert.ToInt64( rows[ "Queries" ] );
-                    sample.Values[ "slow_queries" ] = Convert.ToInt64( rows[ "Slow_queries" ] );
-                    sample.Values[ "insert_commands" ] = Convert.ToInt64( rows[ "Com_insert" ] );
-                    sample.Values[ "select_commands" ] = Convert.ToInt64( rows[ "Com_select" ] );
-                    sample.Values[ "update_commands" ] = Convert.ToInt64( rows[ "Com_update" ] );
-                    sample.Values[ "uptime" ] = Convert.ToInt32( rows[ "Uptime" ] );
-                    sample.Values[ "max_used_connections" ] = Convert.ToInt32( rows[ "Max_used_connections" ] );
-                    sample.Values[ "select_full_join" ] = Convert.ToInt32( rows[ "Select_full_join" ] );
-                    sample.Values[ "bytes_received" ] = Convert.ToInt64( rows[ "Bytes_received" ] );
-                    sample.Values[ "bytes_sent" ] = Convert.ToInt64( rows[ "Bytes_sent" ] );
-                    sample.Values[ "connections" ] = Convert.ToInt64( rows[ "Connections" ] );
-                    sample.Values[ "threads_running" ] = Convert.ToInt32( rows[ "Threads_running" ] );
-
-                    return sample;
+                    return rows;
                 }
             }
         }
+
+        protected override MetricGroupSample ProcessMetricSourceData( MetricGroup metricGroup, Dictionary<string, object> sourceData )
+        {
+            var sample = new MetricGroupSample();
+
+            foreach ( var metric in metricGroup.Metrics )
+            {
+                sample.Values[ metric.Name ] = sourceData[ metric.Name ];
+            }
+
+            return sample;
+        }
+
     }
 }
