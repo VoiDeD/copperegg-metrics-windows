@@ -17,6 +17,14 @@ This project is still heavily WIP, so your mileage may vary!
   - Uptime
   - Full table scan joins
   - Data sent/received
+- .NET
+  - Exceptions thrown
+  - Interop: Params/returns marshalled
+  - Memory: # GC handles
+  - Memory: Allocated bytes/sec
+  - Memory: Large object heap size
+  - Networking: bytes sent/received
+  - Networking: Connections established
 
 
 ## Requirements
