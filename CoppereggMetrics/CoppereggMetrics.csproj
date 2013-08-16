@@ -53,6 +53,7 @@
     <Compile Include="Metrics\IMetricProvider.cs" />
     <Compile Include="Metrics\Providers\BaseMetricProvider.cs" />
     <Compile Include="Metrics\Providers\MySqlMetricProvider.cs" />
+    <Compile Include="Metrics\Providers\NETMetricProvider.cs" />
     <Compile Include="Service\ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -32,6 +32,7 @@ namespace CoppereggMetrics
 
             // todo: reflection/plugin system?
             metricProviders.Add( new MySqlMetricProvider() );
+            metricProviders.Add( new NETMetricProvider() );
         }
 
 
